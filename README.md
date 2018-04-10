@@ -1,10 +1,10 @@
 # Polly.Extensions.Http
 
-Polly.Extensions.Http is an extensions package containing opinionated convenience methods for configuring [Polly](github.com/App-vNext/Polly) policies to handle transient faults typical of calls through HttpClient.
+Polly.Extensions.Http is an extensions package containing opinionated convenience methods for configuring [Polly](https://github.com/App-vNext/Polly) policies to handle transient faults typical of calls through HttpClient.
 
 Polly.Extensions.Http targets .NET Standard 1.1.
 
-[Polly](github.com/App-vNext/Polly) is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner.  
+[Polly](https://github.com/App-vNext/Polly) is a .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner.  
 
 [<img align="right" src="https://github.com/dotnet/swag/raw/master/logo/dotnetfoundation_v4_small.png" width="100" />](https://www.dotnetfoundation.org/)
 Polly is a member of the [.NET Foundation](https://www.dotnetfoundation.org/about)!
@@ -44,7 +44,7 @@ The pre-defined set of conditions to handle can be freely extended using Polly's
 // Pre-canned http fault handling plus extra http status codes
 var policy = HttpPolicyExtensions
   .HandleTransientHttpError()
-  .OrResult(response => (int)response.StatusCode == 429) // RetryAfter
+  .OrResult(response => (int)response.StatusCode == someStatusCode) 
   .RetryAsync(3);
 
 // Pre-canned http fault handling plus extra exceptions
@@ -82,7 +82,7 @@ var retryPolicy = HttpPolicyExtensions
   .Or<TimeoutRejectedException>() // thrown by Polly's TimeoutPolicy on timeout
   .RetryAsync(3);
 
-var timeoutPolicy = Policy.TimeoutAsync(10);  
+var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);  
 
 serviceCollection.AddHttpClient("example.com", c => c.BaseAddress = new Uri("http://example.com"))
   .AddPolicyHandler(retryPolicy)
@@ -93,7 +93,7 @@ serviceCollection.AddHttpClient("example.com", c => c.BaseAddress = new Uri("htt
 
 # For more information on Polly
 
-For more information on Polly and configuring Polly policies see the [main Polly repository](github.com/App-vNext/Polly).
+For more information on Polly and configuring Polly policies see the [main Polly repository](https://github.com/App-vNext/Polly).
 
 # Release notes
 
